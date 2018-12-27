@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="warn" monitorInterval="30">
+<configuration status="warn" verbose="false" monitorInterval="30">
     <appenders>
-        <flume name="EventLogger" compress="false" type="avro" ignoreExceptions="false" batchSize="10">
+        <flume name="EventLogger" ignoreExceptions="false" compress="false" type="avro">
             <!-- flume主机IP及端口 -->
             <agent host="192.168.22.180" port="41414"/>
-            <patternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <!--<patternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>-->
+            <RFC5424Layout enterpriseNumber="18060" includeMDC="true" appName="log4j2-flume-example"/>
+            <!--<jsonLayout/>-->
         </flume>
         <console name="Console" target="SYSTEM_OUT">
             <patternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
         </console>
     </appenders>
     <loggers>
-        <logger name="com.xwq.example" level="debug">
+        <logger name="com.xwq.example" level="debug" additivity="false">
             <appenderRef ref="EventLogger"/>
+            <appenderRef ref="Console"/>
         </logger>
         <root level="info">
             <appenderRef ref="Console"/>
-            <appenderRef ref="EventLogger"/>
         </root>
     </loggers>
 </configuration>
